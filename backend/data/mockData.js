@@ -1,0 +1,288 @@
+// Mock data for listings - Pune, India (ADYPU Campus)
+// Used when MongoDB is not connected
+
+export const mockListings = [
+  {
+    id: '1',
+    title: 'Modern Studio Apartment',
+    description: 'Beautiful modern studio apartment located just 2.5km from ADYPU Campus. Perfect for students looking for a clean, minimalist living space. Fully furnished with all amenities.',
+    price: 12000,
+    distance: 2.5,
+    pureVeg: true,
+    gender: 'Co-ed',
+    image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800',
+    vibe: 'Early Bird',
+    address: {
+      street: 'Near Charholi Budruk',
+      city: 'Pune',
+      state: 'Maharashtra',
+      zipCode: '412105',
+    },
+    location: {
+      type: 'Point',
+      coordinates: [73.8567, 18.5204], // Pune coordinates
+    },
+    amenities: ['WiFi', 'Fully Furnished', 'Parking', 'Laundry', 'AC'],
+    lifestyle: {
+      earlyBird: true,
+      nightOwl: false,
+    },
+    availableFrom: '2024-02-01',
+    contact: {
+      name: 'Priya Sharma',
+      email: 'priya.sharma@example.com',
+      phone: '+91 98765 43210',
+    },
+    isActive: true,
+  },
+  {
+    id: '2',
+    title: 'Spacious 2BHK',
+    description: 'Spacious 2-bedroom apartment perfect for sharing. Great location with easy access to public transport. Modern amenities and friendly neighborhood.',
+    price: 18000,
+    distance: 5.2,
+    pureVeg: false,
+    gender: 'Male',
+    image: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800',
+    vibe: 'Night Owl',
+    address: {
+      street: 'Wagholi',
+      city: 'Pune',
+      state: 'Maharashtra',
+      zipCode: '412207',
+    },
+    location: {
+      type: 'Point',
+      coordinates: [73.8567, 18.5204],
+    },
+    amenities: ['WiFi', 'Fully Furnished', 'Parking', 'Gym Access', 'AC', 'Balcony'],
+    lifestyle: {
+      earlyBird: false,
+      nightOwl: true,
+    },
+    availableFrom: '2024-02-15',
+    contact: {
+      name: 'Rahul Patil',
+      email: 'rahul.patil@example.com',
+      phone: '+91 98765 43211',
+    },
+    isActive: true,
+  },
+  {
+    id: '3',
+    title: 'Luxury Penthouse Suite',
+    description: 'Premium penthouse suite with stunning city views. Luxury amenities and premium location near ADYPU. Perfect for those who appreciate quality living.',
+    price: 25000,
+    distance: 1.8,
+    pureVeg: true,
+    gender: 'Co-ed',
+    image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800',
+    vibe: 'Early Bird',
+    address: {
+      street: 'Charholi Budruk, Near ADYPU Campus',
+      city: 'Pune',
+      state: 'Maharashtra',
+      zipCode: '412105',
+    },
+    location: {
+      type: 'Point',
+      coordinates: [73.8567, 18.5204],
+    },
+    amenities: ['WiFi', 'Fully Furnished', 'Parking', 'Gym', 'Pool', 'AC', 'Concierge'],
+    lifestyle: {
+      earlyBird: true,
+      nightOwl: false,
+    },
+    availableFrom: '2024-03-01',
+    contact: {
+      name: 'Ananya Desai',
+      email: 'ananya.desai@example.com',
+      phone: '+91 98765 43212',
+    },
+    isActive: true,
+  },
+  {
+    id: '4',
+    title: 'Cozy Loft in Charholi',
+    description: 'Charming loft with character in Charholi area. Great for creative individuals. Close to cafes, restaurants, and local markets.',
+    price: 14000,
+    distance: 3.5,
+    pureVeg: false,
+    gender: 'Female',
+    image: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800',
+    vibe: 'Night Owl',
+    address: {
+      street: 'Charholi Budruk, Lohegaon',
+      city: 'Pune',
+      state: 'Maharashtra',
+      zipCode: '412105',
+    },
+    location: {
+      type: 'Point',
+      coordinates: [73.8567, 18.5204],
+    },
+    amenities: ['WiFi', 'Partially Furnished', 'Parking', 'AC'],
+    lifestyle: {
+      earlyBird: false,
+      nightOwl: true,
+    },
+    availableFrom: '2024-02-20',
+    contact: {
+      name: 'Kavya Joshi',
+      email: 'kavya.joshi@example.com',
+      phone: '+91 98765 43213',
+    },
+    isActive: true,
+  },
+  {
+    id: '5',
+    title: 'Minimalist Studio',
+    description: 'Clean, minimalist studio perfect for focused students. Quiet neighborhood near ADYPU, great study environment.',
+    price: 11000,
+    distance: 4.1,
+    pureVeg: true,
+    gender: 'Co-ed',
+    image: 'https://images.unsplash.com/photo-1505843513577-22bb7d21e455?w=800',
+    vibe: 'Early Bird',
+    address: {
+      street: 'Lohegaon',
+      city: 'Pune',
+      state: 'Maharashtra',
+      zipCode: '412105',
+    },
+    location: {
+      type: 'Point',
+      coordinates: [73.8567, 18.5204],
+    },
+    amenities: ['WiFi', 'Fully Furnished', 'Parking', 'AC', 'Study Desk'],
+    lifestyle: {
+      earlyBird: true,
+      nightOwl: false,
+    },
+    availableFrom: '2024-02-10',
+    contact: {
+      name: 'Arjun Singh',
+      email: 'arjun.singh@example.com',
+      phone: '+91 98765 43214',
+    },
+    isActive: true,
+  },
+  {
+    id: '6',
+    title: 'Urban Apartment Complex',
+    description: 'Modern apartment in vibrant urban complex near ADYPU. Great community feel, lots of amenities, perfect for social students.',
+    price: 16500,
+    distance: 2.9,
+    pureVeg: false,
+    gender: 'Male',
+    image: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800',
+    vibe: 'Night Owl',
+    address: {
+      street: 'Lohegaon, Near ADYPU Campus',
+      city: 'Pune',
+      state: 'Maharashtra',
+      zipCode: '412105',
+    },
+    location: {
+      type: 'Point',
+      coordinates: [73.8567, 18.5204],
+    },
+    amenities: ['WiFi', 'Fully Furnished', 'Parking', 'Gym', 'AC', 'Rooftop'],
+    lifestyle: {
+      earlyBird: false,
+      nightOwl: true,
+    },
+    availableFrom: '2024-02-25',
+    contact: {
+      name: 'Vikram Mehta',
+      email: 'vikram.mehta@example.com',
+      phone: '+91 98765 43215',
+    },
+    isActive: true,
+  },
+  {
+    id: '7',
+    title: 'Budget-Friendly 1BHK',
+    description: 'Affordable 1-bedroom apartment perfect for budget-conscious students. Clean, well-maintained, close to ADYPU campus.',
+    price: 9000,
+    distance: 3.2,
+    pureVeg: true,
+    gender: 'Co-ed',
+    image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800',
+    vibe: 'Early Bird',
+    address: {
+      street: 'Charholi Budruk',
+      city: 'Pune',
+      state: 'Maharashtra',
+      zipCode: '412105',
+    },
+    location: {
+      type: 'Point',
+      coordinates: [73.8567, 18.5204],
+    },
+    amenities: ['WiFi', 'Fully Furnished', 'Parking', 'AC'],
+    lifestyle: {
+      earlyBird: true,
+      nightOwl: false,
+    },
+    availableFrom: '2024-02-05',
+    contact: {
+      name: 'Sneha Reddy',
+      email: 'sneha.reddy@example.com',
+      phone: '+91 98765 43216',
+    },
+    isActive: true,
+  },
+  {
+    id: '8',
+    title: 'Premium 3BHK Villa',
+    description: 'Luxurious 3-bedroom villa with garden. Perfect for groups of friends. Premium location with all modern amenities.',
+    price: 30000,
+    distance: 4.5,
+    pureVeg: false,
+    gender: 'Co-ed',
+    image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800',
+    vibe: 'Early Bird',
+    address: {
+      street: 'Wagholi',
+      city: 'Pune',
+      state: 'Maharashtra',
+      zipCode: '412207',
+    },
+    location: {
+      type: 'Point',
+      coordinates: [73.8567, 18.5204],
+    },
+    amenities: ['WiFi', 'Fully Furnished', 'Parking', 'Gym', 'Pool', 'Garden', 'AC'],
+    lifestyle: {
+      earlyBird: true,
+      nightOwl: false,
+    },
+    availableFrom: '2024-03-15',
+    contact: {
+      name: 'Aditya Kapoor',
+      email: 'aditya.kapoor@example.com',
+      phone: '+91 98765 43217',
+    },
+    isActive: true,
+  },
+];
+
+export const mockUsers = [
+  {
+    _id: '1',
+    name: 'Demo User',
+    email: 'demo@example.com',
+    password: '$2b$10$YourHashedPasswordHere', // We'll handle plain text check for mock mode for simplicity or just mock matches
+    phone: '1234567890',
+    role: 'user',
+    preferences: {
+      pureVeg: true,
+      gender: 'Co-ed',
+      lifestyle: {
+        earlyBird: true,
+        nightOwl: false,
+      }
+    }
+  }
+];

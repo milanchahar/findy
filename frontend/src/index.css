@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+/* Base (brutalist, high-contrast) */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #000;
+  color: #fff;
+  font-family: "Inter Tight", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
+  cursor: none;
+}
+
+/* Hide default cursor everywhere (AnimatedCursor renders our premium cursor) */
+* {
+  cursor: none !important;
+}
