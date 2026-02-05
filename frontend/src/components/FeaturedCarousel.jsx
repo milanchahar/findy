@@ -8,21 +8,21 @@ import 'swiper/css/pagination';
 const featured = [
   {
     id: 1,
-    label: 'Pure Veg Haven',
-    title: 'Curated homes for plant-powered lives',
-    image: 'https://images.unsplash.com/photo-1523217582562-09d0def993a6?w=1200',
+    title: 'Plant-Verified Homes',
+    label: 'Green Living',
+    image: 'https://images.unsplash.com/photo-1583847268964-b28dc9f51f92?w=1200&auto=format&fit=crop', // Cozy living room with plants
   },
   {
     id: 2,
-    label: 'Night Owl Lofts',
-    title: 'Spaces that come alive after dark',
-    image: 'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=1200',
+    title: 'Night Owl Pads',
+    label: 'Late Night Vibes',
+    image: 'https://images.unsplash.com/photo-1554995207-c18c203602cb?w=1200&auto=format&fit=crop', // Evening interior view
   },
   {
     id: 3,
-    label: 'Early Bird Suites',
-    title: 'Sunrise-ready apartments near campus',
-    image: 'https://images.unsplash.com/photo-1505691723518-36a5ac3be353?w=1200',
+    title: 'Campus Ready',
+    label: 'Student Housing',
+    image: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=1200&auto=format&fit=crop', // Practical apartment
   },
 ];
 

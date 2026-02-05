@@ -31,7 +31,7 @@ const Home = () => {
       type: 'Studio',
       pureVeg: true,
       gender: 'Co-ed',
-      image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800',
+      image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&auto=format&fit=crop', // Realistic cozy apartment interior 
       vibe: 'Early Bird',
       city: 'Pune',
       location: 'Koregaon Park',
@@ -44,7 +44,7 @@ const Home = () => {
       type: 'Apartment',
       pureVeg: false,
       gender: 'Male',
-      image: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800',
+      image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&auto=format&fit=crop', // Standard apartment living room
       vibe: 'Night Owl',
       city: 'Mumbai',
       location: 'Andheri West',
@@ -57,7 +57,7 @@ const Home = () => {
       type: 'Apartment',
       pureVeg: true,
       gender: 'Co-ed',
-      image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800',
+      image: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&auto=format&fit=crop', // Nice but realistic apartment
       vibe: 'Early Bird',
       city: 'Bangalore',
       location: 'Indiranagar',
@@ -70,7 +70,7 @@ const Home = () => {
       type: 'PG',
       pureVeg: false,
       gender: 'Female',
-      image: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800',
+      image: 'https://images.unsplash.com/photo-1630699144867-37acec97df5a?w=800&auto=format&fit=crop', // Simple room/PG
       vibe: 'Night Owl',
       city: 'Pune',
       location: 'Hinjewadi',
@@ -83,7 +83,7 @@ const Home = () => {
       type: 'Studio',
       pureVeg: true,
       gender: 'Co-ed',
-      image: 'https://images.unsplash.com/photo-1505843513577-22bb7d21e455?w=800',
+      image: 'https://images.unsplash.com/photo-1554995207-c18c203602cb?w=800&auto=format&fit=crop', // Realistic living space
       vibe: 'Early Bird',
       city: 'Delhi',
       location: 'Saket',
@@ -96,20 +96,20 @@ const Home = () => {
       type: 'Apartment',
       pureVeg: false,
       gender: 'Male',
-      image: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800',
+      image: 'https://images.unsplash.com/photo-1536376072261-38c75010e6c9?w=800&auto=format&fit=crop', // Modest apartment
       vibe: 'Night Owl',
       city: 'Hyderabad',
       location: 'Gachibowli',
     },
     {
       id: 7,
-      title: 'Sea View Apartment',
+      title: 'City View Apartment',
       price: 35000,
       distance: 1.2,
       type: 'Apartment',
       pureVeg: true,
       gender: 'Female',
-      image: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800',
+      image: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&auto=format&fit=crop', // Kitchen/Living area
       vibe: 'Chill',
       city: 'Mumbai',
       location: 'Bandra',
@@ -122,7 +122,7 @@ const Home = () => {
       type: 'PG',
       pureVeg: false,
       gender: 'Male',
-      image: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800',
+      image: 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?w=800&auto=format&fit=crop', // Simple bedroom/student room
       vibe: 'Party',
       city: 'Pune',
       location: 'Viman Nagar',
@@ -274,8 +274,8 @@ const Home = () => {
       <button
         onClick={() => setActiveDropdown(activeDropdown === type ? null : type)}
         className={`flex items-center gap-2 px-4 py-3 rounded-xl border text-sm font-medium transition-all duration-200 ${activeDropdown === type || activeValue !== 'All'
-            ? 'bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.2)]'
-            : 'bg-white/5 text-gray-300 border-white/10 hover:bg-white/10 hover:border-white/30'
+          ? 'bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.2)]'
+          : 'bg-white/5 text-gray-300 border-white/10 hover:bg-white/10 hover:border-white/30'
           }`}
       >
         <Icon size={16} />
@@ -401,8 +401,8 @@ const Home = () => {
               <button
                 onClick={() => handleFilterChange('pureVeg', !filters.pureVeg)}
                 className={`flex items-center gap-2 px-4 py-3 rounded-xl border text-sm font-medium transition-all duration-200 ${filters.pureVeg
-                    ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.2)]'
-                    : 'bg-white/5 text-gray-300 border-white/10 hover:bg-white/10 hover:border-white/30'
+                  ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.2)]'
+                  : 'bg-white/5 text-gray-300 border-white/10 hover:bg-white/10 hover:border-white/30'
                   }`}
               >
                 <div className={`w-2 h-2 rounded-full ${filters.pureVeg ? 'bg-current' : 'bg-gray-500'}`} />
