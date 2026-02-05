@@ -41,7 +41,7 @@ const Hero = ({ searchQuery, setSearchQuery }) => {
           }}
         />
       </div>
-      
+
       <div className="container mx-auto px-6 relative z-10">
         <motion.div
           className="text-center"
@@ -63,7 +63,7 @@ const Hero = ({ searchQuery, setSearchQuery }) => {
           >
             FINDYY
           </motion.h1>
-          
+
           <motion.div
             className="mb-12"
             initial={{ opacity: 0 }}
@@ -74,7 +74,7 @@ const Hero = ({ searchQuery, setSearchQuery }) => {
               The Anti-Gravity
             </p>
             <p className="text-xl md:text-2xl text-gray-500 uppercase tracking-[0.3em]">
-              Roommate Finder for ADYPU, Pune
+              Roommate Finder for India
             </p>
           </motion.div>
 
@@ -93,7 +93,7 @@ const Hero = ({ searchQuery, setSearchQuery }) => {
               >
                 <input
                   type="text"
-                  placeholder="Search for your perfect roommate near ADYPU..."
+                  placeholder="Search by City, Location, or Property..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full px-8 py-6 pl-16 pr-20 bg-white/5 border-2 border-white/10 rounded-none text-white placeholder-gray-500 focus:outline-none focus:border-white/40 transition-all text-lg"

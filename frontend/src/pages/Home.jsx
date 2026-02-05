@@ -1,9 +1,12 @@
-import { useState, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import Hero from '../components/Hero';
 import ListingCard from '../components/ListingCard';
-import { Filter, TrendingUp, Users, MapPin, Clock } from 'lucide-react';
+import {
+  Filter, TrendingUp, Users, MapPin, Clock,
+  ChevronDown, Home as HomeIcon, Wallet, X
+} from 'lucide-react';
 import { useGSAP } from '../hooks/useGSAP';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -11,212 +14,222 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 const Home = () => {
   const navigate = useNavigate();
 
-  // Refs for GSAP animations
+  // Refs
   const statsSectionRef = useRef(null);
   const statsRefs = useRef([]);
-  const filtersSectionRef = useRef(null);
-  const filterButtonsRef = useRef(null);
   const listingsSectionRef = useRef(null);
   const listingCardsRef = useRef([]);
   const ctaSectionRef = useRef(null);
 
-  // Enhanced sample listing data - Pune, India (ADYPU Campus)
+  // Enhanced Data
   const allListings = [
     {
       id: 1,
       title: 'Modern Studio Apartment',
       price: 12000,
       distance: 2.5,
+      type: 'Studio',
       pureVeg: true,
       gender: 'Co-ed',
       image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800',
       vibe: 'Early Bird',
+      city: 'Pune',
+      location: 'Koregaon Park',
     },
     {
       id: 2,
       title: 'Spacious 2BHK',
       price: 18000,
       distance: 5.2,
+      type: 'Apartment',
       pureVeg: false,
       gender: 'Male',
       image: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800',
       vibe: 'Night Owl',
+      city: 'Mumbai',
+      location: 'Andheri West',
     },
     {
       id: 3,
       title: 'Luxury Penthouse Suite',
-      price: 25000,
+      price: 45000,
       distance: 1.8,
+      type: 'Apartment',
       pureVeg: true,
       gender: 'Co-ed',
       image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800',
       vibe: 'Early Bird',
+      city: 'Bangalore',
+      location: 'Indiranagar',
     },
     {
       id: 4,
-      title: 'Cozy Loft in Charholi',
+      title: 'Cozy Loft near Tech Park',
       price: 14000,
       distance: 3.5,
+      type: 'PG',
       pureVeg: false,
       gender: 'Female',
       image: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800',
       vibe: 'Night Owl',
+      city: 'Pune',
+      location: 'Hinjewadi',
     },
     {
       id: 5,
       title: 'Minimalist Studio',
       price: 11000,
       distance: 4.1,
+      type: 'Studio',
       pureVeg: true,
       gender: 'Co-ed',
       image: 'https://images.unsplash.com/photo-1505843513577-22bb7d21e455?w=800',
       vibe: 'Early Bird',
+      city: 'Delhi',
+      location: 'Saket',
     },
     {
       id: 6,
       title: 'Urban Apartment Complex',
       price: 16500,
       distance: 2.9,
+      type: 'Apartment',
       pureVeg: false,
       gender: 'Male',
       image: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800',
       vibe: 'Night Owl',
+      city: 'Hyderabad',
+      location: 'Gachibowli',
+    },
+    {
+      id: 7,
+      title: 'Sea View Apartment',
+      price: 35000,
+      distance: 1.2,
+      type: 'Apartment',
+      pureVeg: true,
+      gender: 'Female',
+      image: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800',
+      vibe: 'Chill',
+      city: 'Mumbai',
+      location: 'Bandra',
+    },
+    {
+      id: 8,
+      title: 'Student Friendly PG',
+      price: 8000,
+      distance: 0.5,
+      type: 'PG',
+      pureVeg: false,
+      gender: 'Male',
+      image: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800',
+      vibe: 'Party',
+      city: 'Pune',
+      location: 'Viman Nagar',
     },
   ];
 
-  // Filter state
+  // Unique Data for Dropdowns
+  const cities = [...new Set(allListings.map(item => item.city))];
+  const propertyTypes = [...new Set(allListings.map(item => item.type))];
+
+  // Filter State
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeFilters, setActiveFilters] = useState({
+  const [filters, setFilters] = useState({
+    city: 'All',
+    type: 'All',
+    priceRange: 'All', // 'Under 10k', '10k-20k', '20k+'
+    gender: 'All',
     pureVeg: false,
-    gender: null,
-    vibe: null,
-    maxPrice: null,
-    maxDistance: null,
   });
 
-  // Filter listings based on active filters and search
+  // Dropdown States
+  const [activeDropdown, setActiveDropdown] = useState(null);
+
+  // Close dropdowns on outside click
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest('.filter-dropdown')) {
+        setActiveDropdown(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleFilterChange = (key, value) => {
+    setFilters(prev => ({ ...prev, [key]: value }));
+    setActiveDropdown(null);
+  };
+
   const filteredListings = allListings.filter((listing) => {
-    // Search filter
-    if (searchQuery && !listing.title.toLowerCase().includes(searchQuery.toLowerCase())) {
-      return false;
+    // Search
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      const match =
+        listing.title.toLowerCase().includes(q) ||
+        listing.city.toLowerCase().includes(q) ||
+        listing.location.toLowerCase().includes(q);
+      if (!match) return false;
     }
 
-    // Pure Veg filter
-    if (activeFilters.pureVeg && !listing.pureVeg) {
-      return false;
-    }
+    // City
+    if (filters.city !== 'All' && listing.city !== filters.city) return false;
 
-    // Gender filter
-    if (activeFilters.gender && listing.gender !== activeFilters.gender) {
-      return false;
-    }
+    // Type
+    if (filters.type !== 'All' && listing.type !== filters.type) return false;
 
-    // Vibe filter
-    if (activeFilters.vibe && listing.vibe !== activeFilters.vibe) {
-      return false;
-    }
+    // Gender
+    if (filters.gender !== 'All' && listing.gender !== filters.gender) return false;
 
-    // Price filter
-    if (activeFilters.maxPrice && listing.price > activeFilters.maxPrice) {
-      return false;
-    }
+    // Pure Veg
+    if (filters.pureVeg && !listing.pureVeg) return false;
 
-    // Distance filter
-    if (activeFilters.maxDistance && listing.distance > activeFilters.maxDistance) {
-      return false;
+    // Price
+    if (filters.priceRange !== 'All') {
+      if (filters.priceRange === 'Under ₹10k' && listing.price >= 10000) return false;
+      if (filters.priceRange === '₹10k - ₹20k' && (listing.price < 10000 || listing.price > 20000)) return false;
+      if (filters.priceRange === 'Above ₹20k' && listing.price <= 20000) return false;
     }
 
     return true;
   });
 
-  const handleFilterClick = (filterType, value) => {
-    setActiveFilters((prev) => {
-      if (filterType === 'pureVeg') {
-        return { ...prev, pureVeg: !prev.pureVeg };
-      }
-      if (filterType === 'gender') {
-        return { ...prev, gender: prev.gender === value ? null : value };
-      }
-      if (filterType === 'vibe') {
-        return { ...prev, vibe: prev.vibe === value ? null : value };
-      }
-      if (filterType === 'maxPrice') {
-        return { ...prev, maxPrice: prev.maxPrice === value ? null : value };
-      }
-      if (filterType === 'maxDistance') {
-        return { ...prev, maxDistance: prev.maxDistance === value ? null : value };
-      }
-      return prev;
+  const clearFilters = () => {
+    setFilters({
+      city: 'All',
+      type: 'All',
+      priceRange: 'All',
+      gender: 'All',
+      pureVeg: false,
     });
+    setSearchQuery('');
   };
 
-  const handleGetStarted = () => {
-    navigate('/add-listing');
-  };
+  const hasActiveFilters =
+    filters.city !== 'All' ||
+    filters.type !== 'All' ||
+    filters.priceRange !== 'All' ||
+    filters.gender !== 'All' ||
+    filters.pureVeg;
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
 
-  // GSAP ScrollTrigger Animations
+  const handleGetStarted = () => navigate('/add-listing');
+
+  // GSAP
   useGSAP(() => {
-    // Stats section - bounce animation
+    // Stats
     if (statsRefs.current.length > 0) {
-      statsRefs.current.forEach((stat, index) => {
+      statsRefs.current.forEach((stat) => {
         if (stat) {
           gsap.from(stat, {
             opacity: 0,
-            y: 50,
-            scale: 0.8,
+            y: 30,
             duration: 0.8,
-            ease: 'back.out(1.7)',
-            scrollTrigger: {
-              trigger: stat,
-              start: 'top 85%',
-              toggleActions: 'play none none reverse',
-            },
-          });
-        }
-      });
-    }
-
-    // Filter buttons - stagger slide animation
-    if (filterButtonsRef.current) {
-      const buttons = filterButtonsRef.current.querySelectorAll('button');
-      gsap.from(buttons, {
-        opacity: 0,
-        x: -30,
-        duration: 0.6,
-        stagger: 0.05,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: filterButtonsRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none reverse',
-        },
-      });
-    }
-
-    // Listing cards - 3D flip reveal animation
-    if (listingCardsRef.current.length > 0) {
-      listingCardsRef.current.forEach((card, index) => {
-        if (card) {
-          gsap.from(card, {
-            opacity: 0,
-            y: 80,
-            rotationX: -15,
-            duration: 0.8,
-            delay: index * 0.1,
             ease: 'power3.out',
             scrollTrigger: {
-              trigger: card,
-              start: 'top 85%',
+              trigger: stat,
+              start: 'top 90%',
               toggleActions: 'play none none reverse',
             },
           });
@@ -224,208 +237,257 @@ const Home = () => {
       });
     }
 
-    // CTA section - scale and fade animation
-    if (ctaSectionRef.current) {
-      gsap.from(ctaSectionRef.current, {
-        opacity: 0,
-        scale: 0.9,
-        duration: 1,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: ctaSectionRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none reverse',
-        },
+    // Listing Cards
+    if (listingCardsRef.current.length > 0) {
+      ScrollTrigger.getAll().forEach(t => {
+        if (t.trigger && t.trigger.classList && t.trigger.classList.contains('listing-card-wrapper')) {
+          t.kill();
+        }
+      });
+
+      listingCardsRef.current.forEach((card, index) => {
+        if (card) {
+          gsap.fromTo(card,
+            { opacity: 0, y: 50 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.6,
+              delay: index % 3 * 0.1,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: card,
+                start: 'top 95%',
+                end: 'bottom 10%',
+                toggleActions: 'play none none reverse',
+              },
+            }
+          );
+        }
       });
     }
-  }, [filteredListings.length]); // Re-run when listing count changes
+  }, [filteredListings.length]);
+
+  // Dropdown Component Helper
+  const FilterDropdown = ({ title, icon: Icon, activeValue, options, type }) => (
+    <div className="relative filter-dropdown">
+      <button
+        onClick={() => setActiveDropdown(activeDropdown === type ? null : type)}
+        className={`flex items-center gap-2 px-4 py-3 rounded-xl border text-sm font-medium transition-all duration-200 ${activeDropdown === type || activeValue !== 'All'
+            ? 'bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.2)]'
+            : 'bg-white/5 text-gray-300 border-white/10 hover:bg-white/10 hover:border-white/30'
+          }`}
+      >
+        <Icon size={16} />
+        <span>{activeValue === 'All' ? title : activeValue}</span>
+        <ChevronDown size={14} className={`transition-transform duration-200 ${activeDropdown === type ? 'rotate-180' : ''}`} />
+      </button>
+
+      <AnimatePresence>
+        {activeDropdown === type && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+            transition={{ duration: 0.15 }}
+            className="absolute top-full mt-2 left-0 w-48 bg-[#1a1a1a] border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden backdrop-blur-xl"
+          >
+            <div className="p-1">
+              <button
+                onClick={() => handleFilterChange(type, 'All')}
+                className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${activeValue === 'All' ? 'bg-white/10 text-white' : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                  }`}
+              >
+                All
+              </button>
+              {options.map((option) => (
+                <button
+                  key={option}
+                  onClick={() => handleFilterChange(type, option)}
+                  className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${activeValue === option ? 'bg-white/10 text-white' : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                    }`}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black text-white font-sans selection:bg-white/20">
       <Hero searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
       {/* Stats Section */}
-      <section ref={statsSectionRef} className="border-y border-white/10 py-16">
+      <section ref={statsSectionRef} className="border-y border-white/10 py-12 bg-white/5 backdrop-blur-sm">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
-              { icon: Users, value: '2.5K+', label: 'Active Users' },
-              { icon: MapPin, value: '500+', label: 'Listings' },
+              { icon: Users, value: '25K+', label: 'Active Users' },
+              { icon: MapPin, value: '120+', label: 'Cities' },
               { icon: TrendingUp, value: '98%', label: 'Match Rate' },
               { icon: Clock, value: '<24hrs', label: 'Response Time' },
             ].map((stat, index) => (
               <div
                 key={index}
                 ref={(el) => (statsRefs.current[index] = el)}
-                className="text-center"
+                className="text-center group"
               >
-                <stat.icon className="w-8 h-8 mx-auto mb-4 text-white/60" />
-                <div className="text-4xl font-black mb-2">{stat.value}</div>
-                <div className="text-sm text-gray-400 uppercase tracking-wider">{stat.label}</div>
+                <div className="flex items-center justify-center mb-3">
+                  <div className="p-3 bg-white/10 rounded-full group-hover:bg-white/20 transition-colors">
+                    <stat.icon className="w-5 h-5 text-white/80" />
+                  </div>
+                </div>
+                <div className="text-3xl font-bold mb-1">{stat.value}</div>
+                <div className="text-xs text-gray-500 uppercase tracking-widest">{stat.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Filters Section */}
-      <section ref={filtersSectionRef} className="py-16 border-b border-white/10">
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="flex items-center gap-4 mb-12"
-          >
-            <Filter className="w-6 h-6 text-white" />
-            <h2 className="text-3xl font-bold">Smart Filters</h2>
-            {Object.values(activeFilters).some(v => v !== null && v !== false) && (
+      {/* New Filter Bar Section */}
+      <section className="sticky top-0 z-40 border-b border-white/10 bg-black/80 backdrop-blur-xl transition-all duration-300">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex flex-col md:flex-row md:items-center gap-4 justify-between">
+
+            {/* Left: Filters */}
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="flex items-center gap-2 text-white/50 pr-4 border-r border-white/10 mr-1">
+                <Filter size={18} />
+                <span className="text-sm font-medium uppercase tracking-wide">Filters</span>
+              </div>
+
+              {/* City Dropdown */}
+              <FilterDropdown
+                title="City"
+                icon={MapPin}
+                activeValue={filters.city}
+                options={cities}
+                type="city"
+              />
+
+              {/* Type Dropdown */}
+              <FilterDropdown
+                title="Property Type"
+                icon={HomeIcon}
+                activeValue={filters.type}
+                options={propertyTypes}
+                type="type"
+              />
+
+              {/* Price Dropdown */}
+              <FilterDropdown
+                title="Budget"
+                icon={Wallet}
+                activeValue={filters.priceRange}
+                options={['Under \u20B910k', '\u20B910k - \u20B920k', 'Above \u20B920k']}
+                type="priceRange"
+              />
+
+              {/* Gender Dropdown */}
+              <FilterDropdown
+                title="Gender"
+                icon={Users}
+                activeValue={filters.gender}
+                options={['Male', 'Female', 'Co-ed']}
+                type="gender"
+              />
+
+              {/* Pure Veg Toggle Pill */}
               <button
-                onClick={() => setActiveFilters({ pureVeg: false, gender: null, vibe: null, maxPrice: null, maxDistance: null })}
-                className="ml-auto text-sm text-gray-400 hover:text-white uppercase tracking-wider"
-              >
-                Clear All
-              </button>
-            )}
-          </motion.div>
-
-          <div
-            ref={filterButtonsRef}
-            className="flex flex-wrap gap-4"
-          >
-            <motion.button
-              onClick={() => handleFilterClick('pureVeg')}
-              className={`px-6 py-3 border uppercase text-sm font-medium tracking-wider transition-all rounded-full ${activeFilters.pureVeg
-                ? 'bg-white text-black border-white'
-                : 'border-white/20 bg-white/5 text-white hover:bg-white/10 hover:border-white/40'
-                }`}
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Pure Veg
-            </motion.button>
-
-            {['Male', 'Female'].map((gender) => (
-              <motion.button
-                key={gender}
-                onClick={() => handleFilterClick('gender', gender)}
-                className={`px-6 py-3 border uppercase text-sm font-medium tracking-wider transition-all rounded-full ${activeFilters.gender === gender
-                  ? 'bg-white text-black border-white'
-                  : 'border-white/20 bg-white/5 text-white hover:bg-white/10 hover:border-white/40'
+                onClick={() => handleFilterChange('pureVeg', !filters.pureVeg)}
+                className={`flex items-center gap-2 px-4 py-3 rounded-xl border text-sm font-medium transition-all duration-200 ${filters.pureVeg
+                    ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/50 shadow-[0_0_15px_rgba(16,185,129,0.2)]'
+                    : 'bg-white/5 text-gray-300 border-white/10 hover:bg-white/10 hover:border-white/30'
                   }`}
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
               >
-                {gender}
-              </motion.button>
-            ))}
+                <div className={`w-2 h-2 rounded-full ${filters.pureVeg ? 'bg-current' : 'bg-gray-500'}`} />
+                <span>Pure Veg</span>
+              </button>
+            </div>
 
-            <motion.button
-              onClick={() => handleFilterClick('maxDistance', 5)}
-              className={`px-6 py-3 border uppercase text-sm font-medium tracking-wider transition-all rounded-full ${activeFilters.maxDistance === 5
-                ? 'bg-white text-black border-white'
-                : 'border-white/20 bg-white/5 text-white hover:bg-white/10 hover:border-white/40'
-                }`}
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Under 5km
-            </motion.button>
+            {/* Right: Clear & Count */}
+            <div className="flex items-center gap-4 ml-auto">
+              {hasActiveFilters && (
+                <button
+                  onClick={clearFilters}
+                  className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-1"
+                >
+                  <X size={14} />
+                  Clear
+                </button>
+              )}
+              <div className="px-4 py-2 bg-white/5 rounded-lg border border-white/10">
+                <span className="text-white font-bold">{filteredListings.length}</span>
+                <span className="text-gray-500 text-sm ml-2">Results</span>
+              </div>
+            </div>
 
-            <motion.button
-              onClick={() => handleFilterClick('maxPrice', 7000)}
-              className={`px-6 py-3 border uppercase text-sm font-medium tracking-wider transition-all rounded-full ${activeFilters.maxPrice === 7000
-                ? 'bg-white text-black border-white'
-                : 'border-white/20 bg-white/5 text-white hover:bg-white/10 hover:border-white/40'
-                }`}
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Under ₹7,000
-            </motion.button>
           </div>
         </div>
       </section>
 
       {/* Listings Section */}
-      <section ref={listingsSectionRef} className="py-20" data-listings-section>
+      <section ref={listingsSectionRef} className="py-12 min-h-[60vh] bg-black" data-listings-section>
         <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="mb-16"
-          >
-            <h2 className="text-5xl md:text-6xl font-black mb-4">
-              Available Listings
-              {filteredListings.length !== allListings.length && (
-                <span className="text-2xl md:text-3xl text-gray-400 ml-4">
-                  ({filteredListings.length} found)
-                </span>
-              )}
-            </h2>
-            <p className="text-xl text-gray-400 max-w-2xl">
-              Find your perfect roommate near ADYPU Campus, Pune. Every listing is verified and ready for you.
-            </p>
-          </motion.div>
 
           {filteredListings.length === 0 ? (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-20"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="flex flex-col items-center justify-center py-24 text-center border border-white/10 rounded-3xl bg-white/5 backdrop-blur-sm mx-auto max-w-2xl"
             >
-              <p className="text-2xl text-gray-400 mb-4">No listings found</p>
+              <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mb-6">
+                <Filter size={32} className="text-white/40" />
+              </div>
+              <h3 className="text-2xl font-bold mb-3">No matches found</h3>
+              <p className="text-gray-400 mb-8 max-w-md">
+                We couldn't find any listings matching your current filters. Try adjusting your search or clearing some filters.
+              </p>
               <button
-                onClick={() => {
-                  setSearchQuery('');
-                  setActiveFilters({ pureVeg: false, gender: null, vibe: null, maxPrice: null, maxDistance: null });
-                }}
-                className="px-6 py-3 border border-white/20 bg-white/5 text-white uppercase text-sm font-medium tracking-wider hover:bg-white/10"
+                onClick={clearFilters}
+                className="px-8 py-4 bg-white text-black font-bold uppercase tracking-wider hover:bg-gray-200 transition-colors rounded-xl"
               >
-                Clear Filters
+                Clear All Filters
               </button>
             </motion.div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredListings.map((listing, index) => {
-                // Reset refs array when listings change
-                if (!listingCardsRef.current[index]) {
-                  listingCardsRef.current[index] = null;
-                }
-                return (
-                  <div
-                    key={listing.id}
-                    ref={(el) => {
-                      if (el) listingCardsRef.current[index] = el;
-                    }}
-                  >
-                    <ListingCard listing={listing} />
-                  </div>
-                );
-              })}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-20">
+              {filteredListings.map((listing, index) => (
+                <div
+                  key={listing.id}
+                  ref={(el) => {
+                    if (el) listingCardsRef.current[index] = el;
+                  }}
+                  className="listing-card-wrapper"
+                >
+                  <ListingCard listing={listing} />
+                </div>
+              ))}
             </div>
           )}
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-32 border-t border-white/10">
+      <section className="py-32 border-t border-white/10 bg-gradient-to-b from-black to-white/5">
         <div className="container mx-auto px-6 text-center">
           <div ref={ctaSectionRef}>
-            <h2 className="text-6xl md:text-7xl font-black mb-6">
-              Ready to Find Your
+            <h2 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter">
+              Ready to Upgrade
               <br />
-              <span className="text-white/60">Perfect Match?</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Your Living?</span>
             </h2>
-            <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
-              Join thousands of ADYPU students finding their ideal roommate in Pune through our anti-gravity matching system.
+            <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+              Join thousands of people finding their ideal homes and roommates across India through our intelligent matching system.
             </p>
             <motion.button
               onClick={handleGetStarted}
-              className="px-12 py-5 bg-white text-black text-lg font-bold uppercase tracking-wider hover:bg-gray-200 transition-colors"
+              className="px-12 py-5 bg-white text-black text-lg font-bold uppercase tracking-wider hover:bg-gray-200 transition-all shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:shadow-[0_0_60px_rgba(255,255,255,0.4)] rounded-full"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
             >

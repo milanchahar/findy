@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { MapPin, Users, Sun, Moon } from 'lucide-react';
+import { MapPin, Users, Sun, Moon, Home } from 'lucide-react';
 import FavoriteButton from './FavoriteButton';
 
 const ListingCard = ({ listing }) => {
   const navigate = useNavigate();
-  
+
   const handleCardClick = () => {
     navigate(`/listing/${listing.id}`);
   };
@@ -15,12 +15,12 @@ const ListingCard = ({ listing }) => {
       className="bg-white/5 border border-white/10 overflow-hidden group cursor-pointer h-full flex flex-col"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ 
+      whileHover={{
         y: -12,
         borderColor: 'rgba(255, 255, 255, 0.4)',
         boxShadow: '0 20px 40px rgba(255, 255, 255, 0.1)',
       }}
-      transition={{ 
+      transition={{
         duration: 0.4,
         ease: [0.22, 1, 0.36, 1],
       }}
@@ -36,7 +36,7 @@ const ListingCard = ({ listing }) => {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-        
+
         {/* Tags */}
         <div className="absolute top-4 left-4 flex flex-wrap gap-2">
           {listing.pureVeg && (
@@ -98,13 +98,23 @@ const ListingCard = ({ listing }) => {
         <h3 className="text-2xl font-black mb-4 group-hover:text-white/90 transition-colors">
           {listing.title}
         </h3>
-        
+
         <div className="space-y-3 mb-6 flex-1">
           <div className="flex items-center gap-3 text-gray-400">
             <MapPin size={18} className="text-white/60" />
-            <span className="text-sm">{listing.distance} km from ADYPU Campus</span>
+            <span className="text-sm">
+              {listing.location && listing.city
+                ? `${listing.distance} km from ${listing.location}, ${listing.city}`
+                : `${listing.distance} km from City Center`
+              }
+            </span>
           </div>
-          
+
+          <div className="flex items-center gap-3 text-gray-400">
+            <Home size={18} className="text-white/60" />
+            <span className="text-sm">{listing.type}</span>
+          </div>
+
           <div className="flex items-center gap-3 text-gray-400">
             <Users size={18} className="text-white/60" />
             <span className="text-sm">Roommate matching available</span>
